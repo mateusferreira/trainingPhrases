@@ -2,6 +2,7 @@ package br.mateus.Tools;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -15,6 +16,33 @@ public class SoundManagement {
 	private boolean statePlay = false;
 	
 	private Clip clip;
+	private ArrayList<Integer> tempo = new ArrayList<Integer>();
+	
+	private ArrayList<Integer> formatStringTime(String str){
+		//00:00:53,000-->00:01:00,680
+		//0123456789
+		String string;
+		int num;
+		
+		string = str.replaceAll("\\s+", "");//Retira os espaços vazios da string
+		System.out.println("TESTE: "+string);
+		
+		for(int i = 0, j = 0; i < 2; i++, j+=15){
+			//Horas 
+			num = 3600 * Integer.parseInt(string.substring(0+j, 2+j));
+			
+			num += 60 * Integer.parseInt(string.substring(3+j, 5+j));
+			
+			num += Integer.parseInt(string.substring(6+j, 8+j));
+			
+			num =  (num * 1000) + Integer.parseInt(string.substring(9+j, 12+j));
+			
+			System.out.println("TESTE SUB: "+num);
+			tempo.add(i, num);
+		}
+		
+		return tempo;
+	}
 	
 	
 	
@@ -40,17 +68,19 @@ public class SoundManagement {
 	      }
    }
 	
-	public void playSound(int posIni, int posFinal) {
+	public void playSound(String soundTime) {
+		tempo = formatStringTime(soundTime);
+		
 		if(statePlay == false){
 			
 			//clip.setFramePosition(510000);
-			clip.setMicrosecondPosition(posIni * 1000);
+			clip.setMicrosecondPosition(tempo.get(0) * 1000);
 			clip.start();
 			statePlay = true;
 			Thread thread = new Thread(){
 				public void run(){
 					while(true){
-						if(clip.getMicrosecondPosition() >= posFinal * 1000)
+						if(clip.getMicrosecondPosition() >= tempo.get(1) * 1000)
 							break;
 					}
 					stopClip();

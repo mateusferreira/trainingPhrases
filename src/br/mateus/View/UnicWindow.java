@@ -8,6 +8,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -92,6 +93,8 @@ public class UnicWindow extends JFrame{
 	
 	private ArrayList<String> headerFile = new ArrayList<String>();
 	private ArrayList<String> phraseStudying = new ArrayList<String>();
+	
+	private ArrayList<Integer> sequenceStudy = new ArrayList<Integer>();
 	
 	public UnicWindow(Controller ctrl, String titulo){
 		super(titulo);
@@ -252,7 +255,11 @@ public class UnicWindow extends JFrame{
 				              System.out.println("TESTANDO: "+nameFileText);
 				              headerFile = ctrl.getAmounthPhraseInFile(nameFileText);
 				              
-				              
+				              //Gera a sequencia
+				              for(int i = 1; i <= Integer.parseInt(headerFile.get(1)); i++){
+				            	  sequenceStudy.add(i);
+				              }
+    
 				          }
 					}
 				});
@@ -373,7 +380,8 @@ public class UnicWindow extends JFrame{
 						startTraining.setEnabled(false);
 						
 						if(radioSequence.isSelected()){
-							phraseStudying = ctrl.getContentFile(1);
+							Collections.shuffle(sequenceStudy);
+							phraseStudying = ctrl.getContentFile(sequenceStudy.get(1));
 							//Melhorar o contador 
 							labelTextPhrase.setText("01");
 						}
@@ -395,8 +403,9 @@ public class UnicWindow extends JFrame{
 						//Aqui iremos procurar no arquivo para obter o pedaço a ser tocado e também
 						//o texto e a tradução.
 						buttonNext.setEnabled(false);
-						
-						ctrl.playSound(Integer.parseInt(phraseStudying.get(0)), Integer.parseInt(phraseStudying.get(1)));
+						//Pensar em mudar para string(1 string ao invés de 2 valores), e fazer a arrumação lá na classe
+						//ctrl.playSound(Integer.parseInt(phraseStudying.get(0)), Integer.parseInt(phraseStudying.get(1)));
+						ctrl.playSound(phraseStudying.get(0));
 					}
 				});
 				
@@ -411,10 +420,10 @@ public class UnicWindow extends JFrame{
 						totalPhrasesStudied++;
 						//labelStudied.setText("Studied: "+totalPhrasesStudied+" de "+headerFile.get(1));
 			
-						textCorrection.setText(ctrl.ctrlCompareStrings(phraseStudying.get(2), areaSentence.getText()));
+						textCorrection.setText(ctrl.ctrlCompareStrings(phraseStudying.get(1), areaSentence.getText()));
 						setScoreAndDisplay(0);
 						if(checkShowTraslation.isSelected()){//show de translation
-							textTranslation.setText(phraseStudying.get(3));
+							textTranslation.setText(phraseStudying.get(2));
 						}
 						
 					}

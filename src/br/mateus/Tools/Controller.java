@@ -20,8 +20,8 @@ public class Controller {
 		soundManager.executeSelectedSound(pathSound);
 	}
 	
-	public void playSound(int posIni, int posFinal){
-		soundManager.playSound(posIni, posFinal);
+	public void playSound(String duringTime){
+		soundManager.playSound(duringTime);
 	}
 	
 	public ArrayList<String> getAmounthPhraseInFile(String nameFile){
