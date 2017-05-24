@@ -255,7 +255,7 @@ public class UnicWindow extends JFrame{
 				              System.out.println("TESTANDO: "+nameFileText);
 				              headerFile = ctrl.getAmounthPhraseInFile(nameFileText);
 				              
-				              //Gera a sequencia
+				              //Gera a sequencia ordenada
 				              for(int i = 1; i <= Integer.parseInt(headerFile.get(1)); i++){
 				            	  sequenceStudy.add(i);
 				              }
@@ -322,12 +322,6 @@ public class UnicWindow extends JFrame{
 				c.gridy = 1;
 				painelCentral.add(stop,c);
 				
-				/*c.fill = GridBagConstraints.HORIZONTAL;
-				c.insets = new Insets(vTop,vLeft,vBottom,vRight);
-				c.gridx = 4;
-				c.gridy = 1;
-				painelCentral.add(j1,c);*/
-				
 				c.fill = GridBagConstraints.HORIZONTAL;
 				c.insets = new Insets(vTop,vLeft,vBottom,vRight);
 				c.gridx = 0;
@@ -377,22 +371,15 @@ public class UnicWindow extends JFrame{
 					public void actionPerformed(ActionEvent e) {
 						machineTraining = true;
 						enableTraining();
+						enablePainelSuperior(false);
 						startTraining.setEnabled(false);
 						
-						if(radioSequence.isSelected()){
+						if(radioRandom.isSelected()){
 							Collections.shuffle(sequenceStudy);
-							phraseStudying = ctrl.getContentFile(sequenceStudy.get(1));
-							//Melhorar o contador 
-							labelTextPhrase.setText("01");
-						}
-						else{//Ainda não implementado por isso iqual ao outro.
-							phraseStudying = ctrl.getContentFile(1);
-							labelTextPhrase.setText("01");
+							System.out.println("Seq: "+sequenceStudy.toString());
 						}
 						
-						//System.out.println("FAF? "+phraseStudying.get(1));
-						labelStudied.setText("Studied: 0 de "+headerFile.get(1));//Obtem a qtd de frases, baseado no header.
-						
+						setScoreAndDisplay(3);
 					}
 				});
 				
@@ -438,21 +425,19 @@ public class UnicWindow extends JFrame{
 							buttonNext.setEnabled(false);//Desabilita o botão
 							clearTraining();
 							toogleButtonState(true);
-							if(radioSequence.isSelected()){
-								phraseStudying = ctrl.getContentFile(totalPhrasesStudied + 1);
-								//Melhorar o contador 
-								//labelTextPhrase.setText(String.valueOf(totalPhrasesStudied + 1));
-								setScoreAndDisplay(1);
-							}
+							phraseStudying = ctrl.getContentFile(sequenceStudy.get(totalPhrasesStudied));
+							System.out.println("Merda: "+sequenceStudy.get(totalPhrasesStudied));
+							setScoreAndDisplay(1);
 							
 						}
-						else{//Reset 
+						else{//Reset ou seja, terminou tudo
 							clearTraining();
 							toogleButtonState(false);
 							startTraining.setEnabled(true);
 							buttonNext.setEnabled(false);
 							toogleState(false);
 							totalPhrasesStudied = 0;
+							enablePainelSuperior(true);
 							setScoreAndDisplay(2);
 						}
 					}
@@ -531,8 +516,21 @@ public class UnicWindow extends JFrame{
 					labelScore.setText("HITS: 00 WRONGS: 00");
 					labelTextPhrase.setText("00");
 					break;
+					
+				case 3://Button Start
+					phraseStudying = ctrl.getContentFile(sequenceStudy.get(totalPhrasesStudied));
+					labelTextPhrase.setText(String.valueOf(sequenceStudy.get(totalPhrasesStudied)));
+					labelStudied.setText("Studied: 0 de "+headerFile.get(1));//Obtem a qtd de frases, baseado no header.
+					break;
 			}
 			
+		}
+		
+		private void enablePainelSuperior(boolean flag){
+			importFile.setEnabled(flag);
+			checkShowTraslation.setEnabled(flag);
+			radioRandom.setEnabled(flag);
+			radioSequence.setEnabled(flag);
 		}
 
 }
