@@ -2,6 +2,7 @@ package br.mateus.View;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -23,6 +24,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -72,12 +74,16 @@ public class UnicWindow extends JFrame{
 	private JButton buttonNext = new JButton("Next");
 	private JLabel labelPhrase = new JLabel("Phares Nº ");
 	private JLabel labelTextPhrase = new JLabel("00");
-	//private JLabel j1 = new JLabel("");
 	private JTextField textSentence = new JTextField(30);
 	
 	private JTextArea areaSentence = new JTextArea();
-	private JLabel textCorrection = new JLabel("Correction");
-	private JLabel textTranslation = new JLabel("Translation");
+	private JTextArea textCorrection = new JTextArea();
+	//private JLabel textCorrection = new JLabel("Correction");
+	//private JLabel textTranslation = new JLabel("Translation");
+	private JTextArea textTranslation = new JTextArea();
+	private JScrollPane areaScrollTranslation;
+	private JScrollPane areaScrollCorrection;
+	private JScrollPane areaScrollSentence;
 	
 	//Painel Inferior
 	private JLabel labelStudied = new JLabel("Studied: 0 de 0");
@@ -102,7 +108,7 @@ public class UnicWindow extends JFrame{
 	}
 	
 	public void init(){
-		super.setSize(620, 420);
+		super.setSize(620, 580);
 		super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		super.setContentPane(getPainelGeral());
 		super.setJMenuBar(getMenu());
@@ -275,6 +281,8 @@ public class UnicWindow extends JFrame{
 				painelCentral = new JPanel();
 				painelCentral.setLayout(new GridBagLayout());
 				GridBagConstraints c = new GridBagConstraints();
+				textCorrection.setEditable(false);
+				textTranslation.setEditable(false);
 				
 				buttonNext.setEnabled(false);
 				
@@ -327,8 +335,7 @@ public class UnicWindow extends JFrame{
 				c.gridx = 0;
 				c.gridy = 2;
 				c.gridwidth = 3;
-				//painelCentral.add(textSentence,c);
-				painelCentral.add(getTextSentence(), c);
+				painelCentral.add(getScrollSentence(), c);
 				
 				c.gridwidth = 1;
 				c.fill = GridBagConstraints.HORIZONTAL;
@@ -341,8 +348,8 @@ public class UnicWindow extends JFrame{
 				c.insets = new Insets(vTop,vLeft,vBottom,vRight);
 				c.gridx = 0;
 				c.gridy = 3;
-				c.gridwidth = 2;
-				painelCentral.add(textCorrection,c);
+				c.gridwidth = 3;
+				painelCentral.add(getScrollCorrection(),c);
 				
 				c.gridwidth = 1;
 				c.fill = GridBagConstraints.HORIZONTAL;
@@ -356,8 +363,10 @@ public class UnicWindow extends JFrame{
 				c.gridx = 0;
 				c.gridy = 4;
 				c.gridwidth = 3;
-				painelCentral.add(textTranslation,c);
+				//painelCentral.add(getTextTranslation(),c);
+				painelCentral.add(getScrollTranslation(),c);
 				
+				c.gridwidth = 1;
 				c.fill = GridBagConstraints.HORIZONTAL;
 				c.insets = new Insets(vTop,vLeft,vBottom,vRight);
 				c.gridx = 0;
@@ -374,11 +383,10 @@ public class UnicWindow extends JFrame{
 						enablePainelSuperior(false);
 						startTraining.setEnabled(false);
 						
-						if(radioRandom.isSelected()){
+						if(radioRandom.isSelected())
 							Collections.shuffle(sequenceStudy);
-							System.out.println("Seq: "+sequenceStudy.toString());
-						}
 						
+						System.out.println("Seq: "+sequenceStudy.toString());
 						setScoreAndDisplay(3);
 					}
 				});
@@ -405,11 +413,20 @@ public class UnicWindow extends JFrame{
 						
 						//Atualizar display.
 						totalPhrasesStudied++;
-						//labelStudied.setText("Studied: "+totalPhrasesStudied+" de "+headerFile.get(1));
-			
+						
 						textCorrection.setText(ctrl.ctrlCompareStrings(phraseStudying.get(1), areaSentence.getText()));
+						
+						if(ctrl.getStatusAnswer())
+							textCorrection.setForeground(Color.GREEN);
+						else
+							textCorrection.setForeground(Color.RED);
+						
+						System.out.println("STATUS :"+ctrl.getStatusAnswer());
+						
+						
 						setScoreAndDisplay(0);
 						if(checkShowTraslation.isSelected()){//show de translation
+							//System.out.println("TEste: "+ );
 							textTranslation.setText(phraseStudying.get(2));
 						}
 						
@@ -448,7 +465,7 @@ public class UnicWindow extends JFrame{
 		}
 		
 		private void toogleButtonState(boolean state){
-			play.setEnabled(state);
+			//play.setEnabled(state);
 			stop.setEnabled(state);
 			send.setEnabled(state);
 		}
@@ -478,11 +495,72 @@ public class UnicWindow extends JFrame{
 		
 		private JTextArea getTextSentence(){
 			areaSentence.setAlignmentX(CENTER_ALIGNMENT);
+			areaSentence.setFont(new Font("Serif", Font.ITALIC, 16));
+			areaSentence.setForeground(Color.BLACK);
 			areaSentence.setColumns(20);
 			areaSentence.setLineWrap(true);
 			areaSentence.setRows(2);
 			
 			return areaSentence;
+		}
+		
+		private JTextArea getTextCorrection(){
+			textCorrection.setAlignmentX(CENTER_ALIGNMENT);
+			textCorrection.setFont(new Font("Serif", Font.ITALIC, 16));
+			textCorrection.setColumns(20);// Atualmente cabem 83 caracteres.
+			textCorrection.setRows(2);
+			textCorrection.setLineWrap(true);
+			textCorrection.setWrapStyleWord(true);
+			
+			return textCorrection;
+		}
+		
+		private JTextArea getTextTranslation(){
+			textTranslation.setAlignmentX(CENTER_ALIGNMENT);
+			textTranslation.setFont(new Font("Serif", Font.ITALIC, 16));
+			textTranslation.setForeground(Color.BLUE);
+			textTranslation.setColumns(20);// Atualmente cabem 83 caracteres.
+			textTranslation.setRows(2);
+			textTranslation.setLineWrap(true);
+			textTranslation.setWrapStyleWord(true);
+			
+			return textTranslation;
+		}
+		
+		private JScrollPane getScrollTranslation (){
+			if(areaScrollTranslation == null){
+				textTranslation = getTextTranslation();
+				areaScrollTranslation = new JScrollPane(textTranslation);
+				areaScrollTranslation.setVerticalScrollBarPolicy(
+                    JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+			}
+			
+			return areaScrollTranslation;
+			
+		}
+		
+		private JScrollPane getScrollCorrection (){
+			if(areaScrollCorrection == null){
+				textCorrection = getTextCorrection();
+				areaScrollCorrection = new JScrollPane(textCorrection);
+				areaScrollCorrection.setVerticalScrollBarPolicy(
+                    JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+			}
+			
+			return areaScrollCorrection;
+			
+		}
+		
+		private JScrollPane getScrollSentence (){
+			if(areaScrollSentence == null){
+				areaSentence = getTextSentence();
+				areaScrollSentence = new JScrollPane(areaSentence);
+				areaScrollSentence.setVerticalScrollBarPolicy(
+                    JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+			}
+			
+			return areaScrollSentence;
+			
 		}
 		
 		//PAINEL INFERIOR........
@@ -508,7 +586,8 @@ public class UnicWindow extends JFrame{
 					break;
 					
 				case 1://button next
-					labelTextPhrase.setText(String.valueOf(totalPhrasesStudied + 1));
+					//labelTextPhrase.setText(String.valueOf(totalPhrasesStudied + 1));
+					labelTextPhrase.setText(String.valueOf(sequenceStudy.get(totalPhrasesStudied)));
 					break;
 					
 				case 2://Clear score

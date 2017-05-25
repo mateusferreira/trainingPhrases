@@ -37,7 +37,7 @@ public class SoundManagement {
 			
 			num =  (num * 1000) + Integer.parseInt(string.substring(9+j, 12+j));
 			
-			System.out.println("TESTE SUB: "+num);
+			//System.out.println("TESTE SUB: "+num);
 			tempo.add(i, num);
 		}
 		
