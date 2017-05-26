@@ -29,6 +29,8 @@ import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import br.mateus.Tools.Controller;
 
@@ -246,7 +248,11 @@ public class UnicWindow extends JFrame{
 					public void actionPerformed(ActionEvent arg0) {
 						System.out.println("Escolher arquivo tipo musica");
 						JFileChooser arquivo = new JFileChooser();
+						
+						FileFilter filter = new FileNameExtensionFilter("WAV FILE", "wav");
+						arquivo.setAcceptAllFileFilterUsed(false);//deixa selecionar so o tipo especifico
 						arquivo.setFileSelectionMode(JFileChooser.FILES_ONLY);
+						arquivo.addChoosableFileFilter(filter);
 						
 						if(arquivo.showOpenDialog(arquivo) == JFileChooser.APPROVE_OPTION){ 
 				              pathAudio = arquivo.getSelectedFile().getPath();
@@ -397,7 +403,7 @@ public class UnicWindow extends JFrame{
 					public void actionPerformed(ActionEvent e) {
 						//Aqui iremos procurar no arquivo para obter o pedaço a ser tocado e também
 						//o texto e a tradução.
-						buttonNext.setEnabled(false);
+						//buttonNext.setEnabled(false);
 						//Pensar em mudar para string(1 string ao invés de 2 valores), e fazer a arrumação lá na classe
 						//ctrl.playSound(Integer.parseInt(phraseStudying.get(0)), Integer.parseInt(phraseStudying.get(1)));
 						ctrl.playSound(phraseStudying.get(0));
