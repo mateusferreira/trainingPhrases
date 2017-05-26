@@ -11,6 +11,12 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JFrame;
 
+/*Tentar tocar mp3
+ * https://odoepner.wordpress.com/2013/07/19/play-mp3-or-ogg-using-javax-sound-sampled-mp3spi-vorbisspi/
+ * https://stackoverflow.com/questions/6045384/playing-mp3-and-wav-in-java
+ * 
+ */
+
 public class SoundManagement {
 	
 	private boolean statePlay = false;
