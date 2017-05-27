@@ -110,7 +110,7 @@ public class UnicWindow extends JFrame{
 	}
 	
 	public void init(){
-		super.setSize(620, 580);
+		super.setSize(650, 580);
 		super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		super.setContentPane(getPainelGeral());
 		super.setJMenuBar(getMenu());

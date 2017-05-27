@@ -5,6 +5,7 @@ public class WorkingStrings {
 	
 	public String compareStrings (String str1, String str2){
 		
+		String correctionString = str1;
 		//Retirar espaços no início ou fim da string.
 		str1 = str1.trim();
 		str2 = str2.trim();
@@ -28,7 +29,7 @@ public class WorkingStrings {
 			System.out.println("STR1: "+str1.toUpperCase());
 			System.out.println("STR2: "+str2.toUpperCase());
 			bingo = false;
-			return str1;
+			return correctionString.toUpperCase();
 		}
 		
 	}
