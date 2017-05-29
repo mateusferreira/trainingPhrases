@@ -454,6 +454,7 @@ public class UnicWindow extends JFrame{
 							
 						}
 						else{//Reset ou seja, terminou tudo
+							JOptionPane.showMessageDialog(UnicWindow.this, "FINISH!!\nWords studied: "+headerFile.get(1)+"\nHITS: "+acertos+"\nWRONGS: "+wrongs);
 							clearTraining();
 							toogleButtonState(false);
 							startTraining.setEnabled(true);

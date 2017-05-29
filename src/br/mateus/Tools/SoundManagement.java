@@ -15,6 +15,8 @@ import javax.swing.JFrame;
  * https://odoepner.wordpress.com/2013/07/19/play-mp3-or-ogg-using-javax-sound-sampled-mp3spi-vorbisspi/
  * https://stackoverflow.com/questions/6045384/playing-mp3-and-wav-in-java
  * 
+ * Ver o último topico dá página.
+ * https://www3.ntu.edu.sg/home/ehchua/programming/java/J8c_PlayingSound.html
  */
 
 public class SoundManagement {
