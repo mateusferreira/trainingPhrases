@@ -39,5 +39,9 @@ public class Controller {
 	public boolean getStatusAnswer(){
 		return workingStrings.getBingo();
 	}
+	
+	public void setStatusPhrase (boolean hitOrWrong){
+		fileManager.recordStatus(hitOrWrong);
+	}
 
 }

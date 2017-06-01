@@ -33,8 +33,11 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import br.mateus.Tools.Controller;
+import br.mateus.Tools.EnumContentArrayPhrase;
 
 public class UnicWindow extends JFrame{
+	
+	private EnumContentArrayPhrase eNum;
 	
 	final static boolean shouldFill = true;
 	final static boolean shouldWeightX = true;
@@ -110,7 +113,7 @@ public class UnicWindow extends JFrame{
 	}
 	
 	public void init(){
-		super.setSize(650, 580);
+		super.setSize(700, 580);
 		super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		super.setContentPane(getPainelGeral());
 		super.setJMenuBar(getMenu());
@@ -406,7 +409,8 @@ public class UnicWindow extends JFrame{
 						//buttonNext.setEnabled(false);
 						//Pensar em mudar para string(1 string ao invés de 2 valores), e fazer a arrumação lá na classe
 						//ctrl.playSound(Integer.parseInt(phraseStudying.get(0)), Integer.parseInt(phraseStudying.get(1)));
-						ctrl.playSound(phraseStudying.get(0));
+						//ctrl.playSound(phraseStudying.get(0));
+						ctrl.playSound(phraseStudying.get(eNum.PIECE_AUDIO.getContentArray()));
 					}
 				});
 				
@@ -420,7 +424,7 @@ public class UnicWindow extends JFrame{
 						//Atualizar display.
 						totalPhrasesStudied++;
 						
-						textCorrection.setText(ctrl.ctrlCompareStrings(phraseStudying.get(1), areaSentence.getText()));
+						textCorrection.setText(ctrl.ctrlCompareStrings(phraseStudying.get(eNum.TEXT1.getContentArray()), areaSentence.getText()));
 						
 						if(ctrl.getStatusAnswer())
 							textCorrection.setForeground(Color.GREEN);
@@ -433,7 +437,7 @@ public class UnicWindow extends JFrame{
 						setScoreAndDisplay(0);
 						if(checkShowTraslation.isSelected()){//show de translation
 							//System.out.println("TEste: "+ );
-							textTranslation.setText(phraseStudying.get(2));
+							textTranslation.setText(phraseStudying.get(eNum.TEXT2.getContentArray()));
 						}
 						
 					}
@@ -506,7 +510,7 @@ public class UnicWindow extends JFrame{
 			areaSentence.setForeground(Color.BLACK);
 			areaSentence.setColumns(20);
 			areaSentence.setLineWrap(true);
-			areaSentence.setRows(2);
+			areaSentence.setRows(4);
 			
 			return areaSentence;
 		}
@@ -515,7 +519,7 @@ public class UnicWindow extends JFrame{
 			textCorrection.setAlignmentX(CENTER_ALIGNMENT);
 			textCorrection.setFont(new Font("Serif", Font.ITALIC, 16));
 			textCorrection.setColumns(20);// Atualmente cabem 83 caracteres.
-			textCorrection.setRows(2);
+			textCorrection.setRows(4);
 			textCorrection.setLineWrap(true);
 			textCorrection.setWrapStyleWord(true);
 			
@@ -527,7 +531,7 @@ public class UnicWindow extends JFrame{
 			textTranslation.setFont(new Font("Serif", Font.ITALIC, 16));
 			textTranslation.setForeground(Color.BLUE);
 			textTranslation.setColumns(20);// Atualmente cabem 83 caracteres.
-			textTranslation.setRows(2);
+			textTranslation.setRows(4);
 			textTranslation.setLineWrap(true);
 			textTranslation.setWrapStyleWord(true);
 			
@@ -586,10 +590,12 @@ public class UnicWindow extends JFrame{
 			switch(value){
 				case 0://button send
 					labelStudied.setText("Studied: "+totalPhrasesStudied+" de "+headerFile.get(1));
-					if(ctrl.getStatusAnswer())
+					if(ctrl.getStatusAnswer())//Acertou a resposta.
 						labelScore.setText("HITS: "+ ++acertos+" WRONGS: "+wrongs);
 					else
 						labelScore.setText("HITS: "+acertos+" WRONGS: "+ ++wrongs);
+					
+					//ctrl.setStatusPhrase(ctrl.getStatusAnswer());//Atualiza o status da frase, Acertou ou errou.
 					break;
 					
 				case 1://button next
