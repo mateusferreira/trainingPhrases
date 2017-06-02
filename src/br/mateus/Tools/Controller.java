@@ -7,6 +7,7 @@ import br.mateus.View.UnicWindow;
 public class Controller {
 	private UnicWindow view;
 	private SoundManagement soundManager = new SoundManagement();
+	private SoundMP3Manager soundMP3 = new SoundMP3Manager();
 	private FileManagement fileManager = new FileManagement();
 	private WorkingStrings workingStrings = new WorkingStrings();
 	
@@ -20,8 +21,16 @@ public class Controller {
 		soundManager.executeSelectedSound(pathSound);
 	}
 	
+	public void openSoundMP3(String pathSound){
+		soundMP3.executeSelectedSound(pathSound);
+	}
+	
 	public void playSound(String duringTime){
 		soundManager.playSound(duringTime);
+	}
+	
+	public void playMP3Sound(String duringTime){
+		soundMP3.playSound(duringTime);
 	}
 	
 	public ArrayList<String> getAmounthPhraseInFile(String nameFile){

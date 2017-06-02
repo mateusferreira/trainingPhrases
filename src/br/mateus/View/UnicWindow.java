@@ -38,6 +38,7 @@ import br.mateus.Tools.EnumContentArrayPhrase;
 public class UnicWindow extends JFrame{
 	
 	private EnumContentArrayPhrase eNum;
+	private String extensionFile;
 	
 	final static boolean shouldFill = true;
 	final static boolean shouldWeightX = true;
@@ -252,28 +253,34 @@ public class UnicWindow extends JFrame{
 						System.out.println("Escolher arquivo tipo musica");
 						JFileChooser arquivo = new JFileChooser();
 						
-						FileFilter filter = new FileNameExtensionFilter("WAV FILE", "wav");
+						FileFilter filter = new FileNameExtensionFilter("WAV or MP3 FILE", "wav", "mp3");
 						arquivo.setAcceptAllFileFilterUsed(false);//deixa selecionar so o tipo especifico
 						arquivo.setFileSelectionMode(JFileChooser.FILES_ONLY);
 						arquivo.addChoosableFileFilter(filter);
 						
 						if(arquivo.showOpenDialog(arquivo) == JFileChooser.APPROVE_OPTION){ 
-				              pathAudio = arquivo.getSelectedFile().getPath();
-				              System.out.println("Path: "+pathAudio);
-				              textPathFile.setText(arquivo.getSelectedFile().getName());
-				              ctrl.openSoundFile(pathAudio);				              
-				              startTraining.setEnabled(true);
-				              
-				              //Obtendo o nome do arquivo sem a extensão (Lembrando que a extensão é .wav)
-				              //String temp = arquivo.getSelectedFile().getName();
-				              String nameFileText = pathAudio.substring(0,pathAudio.length()- 4);
-				              System.out.println("TESTANDO: "+nameFileText);
-				              headerFile = ctrl.getAmounthPhraseInFile(nameFileText);
-				              
-				              //Gera a sequencia ordenada
-				              for(int i = 1; i <= Integer.parseInt(headerFile.get(1)); i++){
-				            	  sequenceStudy.add(i);
-				              }
+							pathAudio = arquivo.getSelectedFile().getPath();
+							System.out.println("Path: "+pathAudio);
+							textPathFile.setText(arquivo.getSelectedFile().getName());
+							extensionFile = textPathFile.getText();
+							extensionFile = extensionFile.substring(extensionFile.length() -4, extensionFile.length());
+							System.out.println("Extension File: "+extensionFile);
+							if(extensionFile.toUpperCase().equals(".MP3"))
+								ctrl.openSoundMP3(pathAudio);
+							else	
+								ctrl.openSoundFile(pathAudio);				              
+							startTraining.setEnabled(true);
+							  
+							//Obtendo o nome do arquivo sem a extensão (Lembrando que a extensão é .wav)
+							 //String temp = arquivo.getSelectedFile().getName();
+							 String nameFileText = pathAudio.substring(0,pathAudio.length()- 4);
+							 System.out.println("TESTANDO: "+nameFileText);
+							 headerFile = ctrl.getAmounthPhraseInFile(nameFileText);
+							  
+							 //Gera a sequencia ordenada
+							 for(int i = 1; i <= Integer.parseInt(headerFile.get(1)); i++){
+								 sequenceStudy.add(i);
+							 }
     
 				          }
 					}
@@ -410,7 +417,11 @@ public class UnicWindow extends JFrame{
 						//Pensar em mudar para string(1 string ao invés de 2 valores), e fazer a arrumação lá na classe
 						//ctrl.playSound(Integer.parseInt(phraseStudying.get(0)), Integer.parseInt(phraseStudying.get(1)));
 						//ctrl.playSound(phraseStudying.get(0));
-						ctrl.playSound(phraseStudying.get(eNum.PIECE_AUDIO.getContentArray()));
+						if(extensionFile.toUpperCase().equals(".MP3"))
+							ctrl.playMP3Sound(phraseStudying.get(eNum.PIECE_AUDIO.getContentArray()));
+						
+						else
+							ctrl.playSound(phraseStudying.get(eNum.PIECE_AUDIO.getContentArray()));
 					}
 				});
 				
