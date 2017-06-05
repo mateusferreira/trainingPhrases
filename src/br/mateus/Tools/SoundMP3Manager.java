@@ -65,20 +65,23 @@ public class SoundMP3Manager {
 	
 	public void playSound(String soundTime) {
 		tempo = formatStringTime(soundTime);
-		
+		long tEnd = tempo.get(1)*10000;
+		long tIni = tempo.get(0)*10000;
 		if(statePlay == false){
-			time = new Time(tempo.get(0) * 1000 * 1000);
-			System.out.println("Tempo inicial: "+time);
+			//time = new Time(tempo.get(0) * 1000 * 1000);
+			time = new Time(tIni * 100);
+			System.out.println("Tempo ini: "+tempo.get(0)+" Tempo End: "+tempo.get(1));
 			player.setMediaTime(time);
 			player.start();
 			statePlay = true;
 			Thread thread = new Thread(){
 				public void run(){
 					while(true){
-						if(player.getMediaNanoseconds() >= tempo.get(1) * 1000 * 1000)
+						//if(player.getMediaNanoseconds() >= tempo.get(1) * 1000 * 1000)
+						if(player.getMediaNanoseconds() >= tEnd * 100)	
 							break;
 					}
-					//stopClip();//O problema está neste método. não está executando a faixa certa
+					stopClip();//O problema está neste método. não está executando a faixa certa
 				}
 			};
 			thread.start();
